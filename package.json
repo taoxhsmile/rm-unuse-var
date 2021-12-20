@@ -1,0 +1,54 @@
+{
+  "name": "rm-unuse-var",
+  "displayName": "rm-unuse-var",
+  "description": "移除未使用的变量",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.63.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:rm-unuse-var.remove"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "rm-unuse-var.remove",
+        "title": "Hello World"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "rm-unuse-var.remove",
+        "key": "ctrl+6",
+        "mac": "cmd+6",
+        "when": "resourceLangId == javascript"
+      }
+    ]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "yarn run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.4",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "14.x",
+    "@types/vscode": "^1.63.0",
+    "@vscode/test-electron": "^1.6.2",
+    "eslint": "^8.1.0",
+    "glob": "^7.1.7",
+    "mocha": "^9.1.3",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "@babel/generator": "^7.16.5",
+    "@babel/parser": "^7.16.6",
+    "@babel/traverse": "^7.16.5",
+    "@babel/types": "^7.16.0"
+  }
+}
