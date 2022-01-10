@@ -28,19 +28,35 @@ module.exports = function () {
 
       node.declarations = declarations.filter((declaration) => {
         const { id } = declaration;
-        // scope.getBinding(name) 获取当前所有绑定
-        // scope.getBinding(name).referenced 绑定是否被引用
-        // scope.getBinding(name).constantViolations 获取当前所有绑定修改
-        // scope.getBinding(name).referencePaths  获取当前所有绑定路径
+        // const { b, c } = a;
         if (t.isObjectPattern(id)) {
+          // path.scope.getBinding(name).referenced 判断变量是否被引用
+          // 通过filter移除掉没有使用的变量
           id.properties = id.properties.filter((property) => {
             const binding = path.scope.getBinding(property.key.name);
-            return !!binding?.referenced;
+            // referenced 变量是否被引用
+            // constantViolations 变量被重新定义的地方
+            const { referenced, constantViolations } = binding;
+            if (!referenced && constantViolations.length > 0) {
+              constantViolations.map((violationPath) => {
+                violationPath.remove();
+              });
+            }
+
+            return referenced;
           });
+          // 如果对象中所有变量都没有被应用，则该对象整个移除
           return id.properties.length > 0;
         } else {
+          // const a = 1;
           const binding = path.scope.getBinding(id.name);
-          return !!binding?.referenced;
+          const { referenced, constantViolations } = binding;
+          if (!referenced && constantViolations.length > 0) {
+            constantViolations.map((violationPath) => {
+              violationPath.remove();
+            });
+          }
+          return referenced;
         }
       });
 
